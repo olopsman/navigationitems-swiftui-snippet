@@ -9,8 +9,49 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var showingAdd = false
+
+    var addButton: some View {
+        //Using sheet
+        Button(action: {self.showingAdd.toggle()}) {
+            Image(systemName: "plus.circle")
+                .imageScale(.large)
+                .accessibility(label: Text("Add"))
+        }
+    }
+    
+    var settingsButton: some View {
+        //Using Navigation Link
+        NavigationLink(destination: Text("Settings Page")){
+            Image(systemName: "gear")
+            .imageScale(.large)
+            .accessibility(label: Text("Settings"))
+            }
+    }
+
     var body: some View {
-        Text("Hello, World!")
+        
+        NavigationView {
+            List {
+                Section(header:
+                    Text("Options")
+                        .font(.headline)
+                        .foregroundColor(.blue)
+                    
+                ){
+                    NavigationLink(destination: Text("Details")) {
+                        Text("Show Details")
+                    }
+                }
+            }
+            .navigationBarItems(leading: settingsButton, trailing: addButton)
+            .sheet(isPresented: $showingAdd){
+                Text("Add View")
+            }
+            .listStyle(GroupedListStyle())
+            .navigationBarTitle(Text("Home"))
+            
+        }
     }
 }
 
